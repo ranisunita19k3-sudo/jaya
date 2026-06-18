@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To-Do List - Task Manager</title>
+    <link rel="stylesheet" href="todo-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-check-circle"></i> My To-Do List</h1>
+                <p>Stay organized and productive</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="taskInput" 
+                        class="task-input" 
+                        placeholder="Add a new task..."
+                        autocomplete="off"
+                    >
+                    <button id="addBtn" class="add-btn">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                </div>
+                <div class="input-options">
+                    <input 
+                        type="date" 
+                        id="dueDateInput" 
+                        class="due-date-input"
+                    >
+                    <select id="prioritySelect" class="priority-select">
+                        <option value="low">Low Priority</option>
+                        <option value="medium" selected>Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+                    <select id="categorySelect" class="category-select">
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="health">Health</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="stats-section" id="statsSection">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-circle-notch"></i></div>
+                    <div class="stat-number" id="remainingTasks">0</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+                <div class="stat-card progress-card">
+                    <div class="progress-ring">
+                        <svg width="60" height="60">
+                            <circle cx="30" cy="30" r="27" class="progress-ring-circle"></circle>
+                            <circle cx="30" cy="30" r="27" class="progress-ring-progress" id="progressCircle"></circle>
+                        </svg>
+                        <div class="progress-text" id="completionPercentage">0%</div>
+                    </div>
+                    <div class="stat-label">Completion</div>
+                </div>
+            </section>
+
+            <!-- Filter & Sort Section -->
+            <section class="filter-section">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-list"></i> All
+                    </button>
+                    <button class="filter-btn" data-filter="active">
+                        <i class="fas fa-circle-notch"></i> Active
+                    </button>
+                    <button class="filter-btn" data-filter="completed">
+                        <i class="fas fa-check"></i> Completed
+                    </button>
+                    <button class="filter-btn" data-filter="overdue">
+                        <i class="fas fa-exclamation-circle"></i> Overdue
+                    </button>
+                </div>
+                <div class="sort-buttons">
+                    <button class="sort-btn" id="sortPriority" title="Sort by Priority">
+                        <i class="fas fa-sort-amount-down"></i> Priority
+                    </button>
+                    <button class="sort-btn" id="sortDate" title="Sort by Date">
+                        <i class="fas fa-calendar"></i> Date
+                    </button>
+                    <button class="sort-btn" id="sortRecent" title="Most Recent">
+                        <i class="fas fa-history"></i> Recent
+                    </button>
+                </div>
+            </section>
+
+            <!-- Search Section -->
+            <section class="search-section">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Search tasks..."
+                    autocomplete="off"
+                >
+                <i class="fas fa-search search-icon"></i>
+            </section>
+
+            <!-- Tasks List -->
+            <section class="tasks-section">
+                <div id="tasksList" class="tasks-list">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No tasks yet</h3>
+                        <p>Add a new task to get started!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category Filter -->
+            <section class="category-filter-section">
+                <h3>Filter by Category</h3>
+                <div class="category-tags" id="categoryTags">
+                    <button class="category-tag active" data-category="all">
+                        <i class="fas fa-folder"></i> All Categories
+                    </button>
+                    <button class="category-tag" data-category="work">
+                        <i class="fas fa-briefcase"></i> Work
+                    </button>
+                    <button class="category-tag" data-category="personal">
+                        <i class="fas fa-user"></i> Personal
+                    </button>
+                    <button class="category-tag" data-category="shopping">
+                        <i class="fas fa-shopping-bag"></i> Shopping
+                    </button>
+                    <button class="category-tag" data-category="health">
+                        <i class="fas fa-heart"></i> Health
+                    </button>
+                    <button class="category-tag" data-category="other">
+                        <i class="fas fa-ellipsis-h"></i> Other
+                    </button>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="action-buttons">
+                <button id="clearCompleted" class="action-btn clear-btn">
+                    <i class="fas fa-trash"></i> Clear Completed
+                </button>
+                <button id="exportTasks" class="action-btn export-btn">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button id="importTasks" class="action-btn import-btn">
+                    <i class="fas fa-upload"></i> Import
+                </button>
+                <button id="deleteAll" class="action-btn delete-all-btn">
+                    <i class="fas fa-times"></i> Delete All
+                </button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Task</h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editTaskInput">Task Description</label>
+                    <input type="text" id="editTaskInput" class="form-input" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editDueDate">Due Date</label>
+                        <input type="date" id="editDueDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPriority">Priority</label>
+                        <select id="editPriority" class="form-input">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editCategory">Category</label>
+                    <select id="editCategory" class="form-input">
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="health">Health</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editNotes">Notes</label>
+                    <textarea id="editNotes" class="form-input" rows="3" placeholder="Add notes..."></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">Save Changes</button>
+                    <button type="button" class="btn-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden File Input for Import -->
+    <input type="file" id="importInput" style="display: none;" accept=".json">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="todo-script.js"></script>
+</body>
+</html>
